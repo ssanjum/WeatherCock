@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_animation_list"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/ed_dialog_get_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Enter Place..."
+            android:inputType="text"
+            android:textColorHint="@color/purple" />
+
+        <Button
+            android:id="@+id/btn_dialog_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:background="@drawable/button_bck_ground"
+            android:padding="12sp"
+            android:text="Add" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
