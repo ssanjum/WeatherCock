@@ -1,6 +1,7 @@
 package com.example.anjum.weathercock
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.anjum.weathercock.network.ApiClient
 import com.example.anjum.weathercock.network.ApiInterface
+import kotlinx.android.synthetic.main.activity_add_location.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
 import retrofit2.Call
@@ -19,11 +21,12 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AddLocationActivity : AppCompatActivity() {
-
+    lateinit var progressDialogue: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_location)
         setSupportActionBar(toolbar1)
+        progressDialogue = ProgressDialog(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar1.setNavigationOnClickListener(object : View.OnClickListener {
@@ -54,33 +57,41 @@ class AddLocationActivity : AppCompatActivity() {
     private fun showDialog() {
 
         var builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        var alertdialog: AlertDialog = builder.create()
         var inflater: LayoutInflater = layoutInflater
         var view: View = inflater.inflate(R.layout.add_place_dialog, null)
         var editgetPlace: EditText = view.findViewById(R.id.ed_dialog_get_place)
         var button: Button = view.findViewById(R.id.btn_dialog_add)
-
+        builder.setView(view)
+        builder.show()
         button.setOnClickListener {
-            // toast(place)
+
+            progressDialogue.show()
+            progressDialogue.setMessage("Fetching data ....")
             var place: String = editgetPlace.text.toString().trim()
-            var appid:String="&appid=26f4c901cba4740410b368d8b16a7f53"
-            var baseeURL:String=place+appid
-            var  mainURL:String= "https://api.openweathermap.org/data/2.5/weather"+"?q="+baseeURL
-            val apiService = ApiClient.getWeather(mainURL).create(ApiInterface::class.java)
-            val call = apiService.nearByPlaces
+            var appid: String = "26f4c901cba4740410b368d8b16a7f53"
+
+            val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
+            val call = apiService.getNearByPlaces(place, appid)
             call.enqueue(object : Callback<ActionResult> {
                 override fun onFailure(call: Call<ActionResult>?, t: Throwable?) {
-
+                    progressDialogue.dismiss()
+                    toast(t?.message.toString())
                 }
 
                 override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
-                    val main_object = response.body()
-                    var temp: Long = main_object!!.main.temp.toLong()
-                    toast(temp?.toString())
+                    progressDialogue.dismiss()
+                    if (response.isSuccessful) {
+                        val main_object = response.body()
+                        var temp: Long = main_object!!.main.temp.toLong()
+                        var tempinC = temp - 273
+                        tv_temp_addLoc.text = tempinC.toString() + " \u2103"
+                    } else if (response.message()=="Not Found") {
+                        toast("Invalid place")
+                    }
                 }
             })
         }
-        builder.setView(view)
-        builder.show()
 
     }
 
