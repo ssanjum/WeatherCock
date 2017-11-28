@@ -4,7 +4,6 @@ import com.example.anjum.weathercock.ActionResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -15,8 +14,16 @@ public interface ApiInterface {
     @GET("/data/2.5/weather")
     Call<ActionResult>
 
-    getNearByPlaces(@Query("q") String place,
-                    @Query("appid") String appid);
+    getResultByLocation(@Query("q") String place,
+                        @Query("appid") String appid);
+
+    @GET("/data/2.5/weather")
+    Call<ActionResult>
+
+    getResultByLatLong(@Query("lat") Double lat,
+                       @Query("lon") Double lon,
+                       @Query("appid") String appid);
+
 
 }
 
