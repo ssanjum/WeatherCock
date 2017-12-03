@@ -1,23 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/tv_item_add_location"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="NOIDA"
-        android:textColor="@color/purple"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content" android:id="@+id/ll_item"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_item_place"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:text="NOIDA"
+            android:textColor="@color/purple"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_item_temp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="22dp"
+            android:layout_weight=".3"
+            android:gravity="end"
+            android:text="41"
+            android:textColor="@color/purple"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height=".5dp"
         android:background="@color/blue" />
+
 
 </LinearLayout>

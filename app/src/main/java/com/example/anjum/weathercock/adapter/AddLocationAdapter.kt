@@ -5,20 +5,46 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.model.WeatherModel
 
 /**
  * Created by sanjum on 11/28/2017.
  */
-class AddLocationAdapter(contet: Context, itemList: ArrayList<WeatherModel>) : RecyclerView.Adapter<AddLocationAdapter.MyViewHolder>() {
-    lateinit var itemList: ArrayList<WeatherModel>
-
+class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherModel>)
+    : RecyclerView.Adapter<AddLocationAdapter.MyViewHolder>() {
+    lateinit var model: WeatherModel
     override fun getItemCount(): Int {
-        return itemList.size
+        return if (itemList.size == 0) 1 else itemList.size
+    }
+
+    var listener: OnListClickListener? = null
+
+    interface OnListClickListener {
+        fun onItemClick(pos: Int)
+    }
+
+    fun setOnListClickListener(listener: OnListClickListener) {
+        this.listener = listener
+
     }
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
+        model = itemList.get(position)
+        holder!!.place.text = model.place
+        holder!!.temp.text = model.temp.toString() + " \u2103"
+        holder.linearLayout.setOnClickListener {
+            listener?.onItemClick(position)
+        }
+
+    }
+
+    fun replaceALL(list: ArrayList<WeatherModel>?) {
+        this.itemList.clear()
+        itemList.addAll(list!!)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
@@ -28,6 +54,9 @@ class AddLocationAdapter(contet: Context, itemList: ArrayList<WeatherModel>) : R
 
     class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
+        val place: TextView = itemView!!.findViewById(R.id.tv_item_place)
+        val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
+        val linearLayout = itemView!!.findViewById<LinearLayout>(R.id.ll_item)
 
     }
 

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by sanjum on 11/23/2017.
  */
 
-class Main {
+public class Main {
 
     @SerializedName("temp")
     @Expose

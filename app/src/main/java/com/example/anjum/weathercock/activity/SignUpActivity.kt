@@ -1,4 +1,4 @@
-package com.example.anjum.weathercock
+package com.example.anjum.weathercock.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import com.example.anjum.weathercock.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.home_main.*

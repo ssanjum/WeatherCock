@@ -1,8 +1,7 @@
-package com.example.anjum.weathercock
+package com.example.anjum.weathercock.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
@@ -22,7 +21,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.example.anjum.weathercock.ActionResult
+import com.example.anjum.weathercock.BuildConfig
+import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.adapter.AddLocationAdapter
+import com.example.anjum.weathercock.model.WeatherModel
 import com.example.anjum.weathercock.network.ApiClient
 import com.example.anjum.weathercock.network.ApiInterface
 import com.google.android.gms.common.ConnectionResult
@@ -42,6 +45,10 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     private var apiClient: GoogleApiClient? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+    lateinit var adapter: AddLocationAdapter
+    var itemList: ArrayList<WeatherModel>? = null
+    lateinit var list: ArrayList<WeatherModel>
+    val appId: String = "26f4c901cba4740410b368d8b16a7f53"
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -65,8 +72,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             }
         })
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        rv_add_location.layoutManager=LinearLayoutManager(this,LinearLayout.VERTICAL,false)
-
+        rv_add_location.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
 
     }
@@ -78,13 +84,11 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.menu_add) {
-            showDialog()
+        when (item!!.itemId) {
+            R.id.menu_add -> showDialog()
+            R.id.menu_settings -> toast("TODO")
+        }
 
-        }
-        if (item?.itemId == R.id.menu_settings) {
-            toast("TO DO")
-        }
         return true
 
     }
@@ -119,6 +123,10 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         val main_object = response.body()
                         var temp: Long = main_object!!.main.temp.toLong()
                         var tempinC = temp - 273
+                        var place = main_object.name
+                        list = java.util.ArrayList()
+                        list.add(WeatherModel(tempinC, place))
+                        adapter.replaceALL(list)
                         //tv_temp_addLoc.text = tempinC.toString() + " \u2103"
                     } else if (response.message() == "Not Found") {
                         toast("Invalid place")
@@ -236,7 +244,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         var longi: Double
                         lati = mLastLocation.latitude
                         longi = mLastLocation.longitude
-                        networkHitWithLatLong(lati,longi)
+                        networkHitWithLatLong(lati, longi)
 
                     } else {
                         Toast.makeText(this@AddLocationActivity, "no_location_detected",
@@ -245,7 +253,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 }
     }
 
-    fun networkHitWithLatLong(  lati:Double,  longi:Double){
+    fun networkHitWithLatLong(lati: Double, longi: Double) {
         var appid: String = "26f4c901cba4740410b368d8b16a7f53"
         val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
         val call = apiService.getResultByLatLong(lati, longi, appid)
@@ -261,10 +269,22 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     val main_object = response.body()
                     val place = main_object?.name
                     var temp: Long = main_object!!.main.temp.toLong()
+                    var tempMax: Long = main_object!!.main.tempMax.toLong()
+                    var tempMin: Long = main_object!!.main.tempMin.toLong()
                     var tempinC = temp - 273
+                    itemList = ArrayList()
+                    itemList?.add(WeatherModel(tempinC, place!!))
+                    adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
+                    rv_add_location.adapter = adapter
 
-                    //val adapter=AddLocationAdapter(this@AddLocationActivity,)
-                    // tv_temp_addLoc.text = tempinC.toString() + " \u2103"
+                    adapter.setOnListClickListener(object : AddLocationAdapter.OnListClickListener {
+
+                        override fun onItemClick(pos: Int) {
+                            val intent = Intent(baseContext, DetailsActvity::class.java)
+                            intent.putExtra("NAME", place)
+                            startActivity(intent)
+                        }
+                    })
                 } else if (response.message() == "Not Found") {
                     toast("Invalid place")
                 }
