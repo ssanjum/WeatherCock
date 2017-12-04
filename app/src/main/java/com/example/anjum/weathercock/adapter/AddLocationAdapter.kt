@@ -17,7 +17,7 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
     : RecyclerView.Adapter<AddLocationAdapter.MyViewHolder>() {
     lateinit var model: WeatherModel
     override fun getItemCount(): Int {
-        return if (itemList.size == 0) 1 else itemList.size
+        return itemList.size
     }
 
     var listener: OnListClickListener? = null
@@ -42,10 +42,17 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
     }
 
     fun replaceALL(list: ArrayList<WeatherModel>?) {
+
         this.itemList.clear()
         itemList.addAll(list!!)
-        notifyDataSetChanged()
+        this.notifyDataSetChanged()
     }
+
+    fun getName(pos: Int): String {
+
+        return itemList[pos].place
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_add_location, parent, false)

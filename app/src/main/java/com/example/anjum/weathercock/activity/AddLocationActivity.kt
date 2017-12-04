@@ -47,7 +47,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     lateinit var adapter: AddLocationAdapter
     var itemList: ArrayList<WeatherModel>? = null
-    lateinit var list: ArrayList<WeatherModel>
+     var list: ArrayList<WeatherModel>?=null
     val appId: String = "26f4c901cba4740410b368d8b16a7f53"
 
     override fun onConnectionFailed(p0: ConnectionResult) {
@@ -124,8 +124,9 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         var temp: Long = main_object!!.main.temp.toLong()
                         var tempinC = temp - 273
                         var place = main_object.name
-                        list = java.util.ArrayList()
-                        list.add(WeatherModel(tempinC, place))
+                        list = ArrayList()
+                        list?.add(WeatherModel(tempinC, place))
+                        list?.addAll(itemList!!)
                         adapter.replaceALL(list)
                         //tv_temp_addLoc.text = tempinC.toString() + " \u2103"
                     } else if (response.message() == "Not Found") {
@@ -280,8 +281,9 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     adapter.setOnListClickListener(object : AddLocationAdapter.OnListClickListener {
 
                         override fun onItemClick(pos: Int) {
+                           var placeNam:String=adapter.getName(pos)
                             val intent = Intent(baseContext, DetailsActvity::class.java)
-                            intent.putExtra("NAME", place)
+                            intent.putExtra("NAME", placeNam)
                             startActivity(intent)
                         }
                     })
