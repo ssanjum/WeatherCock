@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "930290971320-amha3np5f8uaf6h0j0apgjckq6dgtq7d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.anjum.weathercock",
+            "certificate_hash": "2b27049cf21e245f2e92bfdc2e030d5fe2ea3d05"
+          }
+        },
+        {
           "client_id": "930290971320-70jt20q5lpae0ha19kn4c2n9r9gs0uis.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930290971320-70jt20q5lpae0ha19kn4c2n9r9gs0uis.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

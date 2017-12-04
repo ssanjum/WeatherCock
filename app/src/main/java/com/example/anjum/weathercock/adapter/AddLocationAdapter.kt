@@ -34,7 +34,7 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         model = itemList.get(position)
         holder!!.place.text = model.place
-        holder!!.temp.text = model.temp.toString() + " \u2103"
+        //holder!!.temp.text = model.temp.toString() + " \u2103"
         holder.linearLayout.setOnClickListener {
             listener?.onItemClick(position)
         }
@@ -45,6 +45,12 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
 
         this.itemList.clear()
         itemList.addAll(list!!)
+        this.notifyDataSetChanged()
+    }
+
+    fun addItem(list: ArrayList<WeatherModel>?) {
+        this.itemList.clear()
+        this.itemList.addAll(list!!)
         this.notifyDataSetChanged()
     }
 
@@ -62,7 +68,7 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
     class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
         val place: TextView = itemView!!.findViewById(R.id.tv_item_place)
-        val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
+        //val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
         val linearLayout = itemView!!.findViewById<LinearLayout>(R.id.ll_item)
 
     }

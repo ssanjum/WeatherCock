@@ -32,6 +32,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_add_location.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
@@ -47,8 +48,6 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     lateinit var adapter: AddLocationAdapter
     var itemList: ArrayList<WeatherModel>? = null
-     var list: ArrayList<WeatherModel>?=null
-    val appId: String = "26f4c901cba4740410b368d8b16a7f53"
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -64,6 +63,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         progressDialogue = ProgressDialog(this)
         progressDialogue.show()
         progressDialogue.setMessage("Fetching data ....")
+        Hawk.init(this).build()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar1.setNavigationOnClickListener(object : View.OnClickListener {
@@ -73,7 +73,14 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         })
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         rv_add_location.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        if (Hawk.contains("MyKey")) {
+            itemList = Hawk.get("MyKey")
+            adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
+        } else {
+            adapter = AddLocationAdapter(this@AddLocationActivity, ArrayList<WeatherModel>())
+        }
 
+        rv_add_location.adapter = adapter
 
     }
 
@@ -118,17 +125,38 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 }
 
                 override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
+                    var isFoundInHawk:Boolean=false
                     progressDialogue.dismiss()
                     if (response.isSuccessful) {
                         val main_object = response.body()
-                        var temp: Long = main_object!!.main.temp.toLong()
-                        var tempinC = temp - 273
-                        var place = main_object.name
-                        list = ArrayList()
-                        list?.add(WeatherModel(tempinC, place))
-                        list?.addAll(itemList!!)
-                        adapter.replaceALL(list)
-                        //tv_temp_addLoc.text = tempinC.toString() + " \u2103"
+                        //  var temp: Long = main_object!!.main.temp.toLong()
+                        // var tempinC = temp - 273
+                        var place = main_object?.name
+                        if (Hawk.contains("MyKey")) {
+                            itemList = Hawk.get("MyKey")
+                            for (model in itemList!!) {
+                                var location: String = model.place
+                                if (place.equals(location)) {
+                                    isFoundInHawk=true
+                                }
+                            }
+                            if (isFoundInHawk){
+                                toast("place already exists")
+                                adapter.notifyDataSetChanged()
+                            }
+                            else{
+                                itemList!!.add(WeatherModel(place!!))
+                                adapter.addItem(itemList)
+                                Hawk.put("MyKey", itemList)
+                            }
+                        }
+                        else{
+                            itemList!!.add(WeatherModel(place!!))
+                            adapter.addItem(itemList)
+                            Hawk.put("MyKey", itemList)
+                        }
+
+
                     } else if (response.message() == "Not Found") {
                         toast("Invalid place")
                     }
@@ -255,6 +283,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     }
 
     fun networkHitWithLatLong(lati: Double, longi: Double) {
+        var isFoundInHawk:Boolean=false
         var appid: String = "26f4c901cba4740410b368d8b16a7f53"
         val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
         val call = apiService.getResultByLatLong(lati, longi, appid)
@@ -267,21 +296,40 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
                 progressDialogue.dismiss()
                 if (response.isSuccessful) {
+                    itemList = ArrayList()
                     val main_object = response.body()
                     val place = main_object?.name
-                    var temp: Long = main_object!!.main.temp.toLong()
-                    var tempMax: Long = main_object!!.main.tempMax.toLong()
-                    var tempMin: Long = main_object!!.main.tempMin.toLong()
-                    var tempinC = temp - 273
-                    itemList = ArrayList()
-                    itemList?.add(WeatherModel(tempinC, place!!))
-                    adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
-                    rv_add_location.adapter = adapter
+                    if (Hawk.contains("MyKey")) {
+                        itemList = Hawk.get("MyKey")
+                        for (model in itemList!!) {
+                            var location: String = model.place
+                            if (location.equals(place)) {
+                              isFoundInHawk=true
+                            }
+                        }
+                        if (isFoundInHawk){
+                            toast("place already exists")
+                            adapter.notifyDataSetChanged()
+                        }
+                        else{
+                            itemList!!.add(WeatherModel(place!!))
+                            adapter.addItem(itemList)
+                            Hawk.put("MyKey", itemList)
+                        }
+                    }
+                    else{
+                        itemList!!.add(WeatherModel(place!!))
+                        adapter.addItem(itemList)
+                        Hawk.put("MyKey", itemList)
+                    }
+                    // var temp: Long = main_object!!.main.temp.toLong()
+                    // var tempinC = temp - 273
+
 
                     adapter.setOnListClickListener(object : AddLocationAdapter.OnListClickListener {
 
                         override fun onItemClick(pos: Int) {
-                           var placeNam:String=adapter.getName(pos)
+                            var placeNam: String = adapter.getName(pos)
                             val intent = Intent(baseContext, DetailsActvity::class.java)
                             intent.putExtra("NAME", placeNam)
                             startActivity(intent)

@@ -26,6 +26,7 @@ class DetailsActvity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         var intent: Intent = intent
         var place: String = intent.getStringExtra("NAME")
+       toolbar1.title=place
         getWeatherDetails(place)
     }
 
