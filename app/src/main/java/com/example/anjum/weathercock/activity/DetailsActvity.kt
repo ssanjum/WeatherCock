@@ -12,7 +12,7 @@ import com.example.anjum.weathercock.network.ApiInterface
 import kotlinx.android.synthetic.main.activity_details_actvity.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
-import retrofit2.Call
+import retrofit2.Call 
 import retrofit2.Callback
 import retrofit2.Response
 
