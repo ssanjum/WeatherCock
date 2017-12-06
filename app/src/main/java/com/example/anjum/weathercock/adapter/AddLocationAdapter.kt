@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.anjum.weathercock.R
+import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.model.WeatherModel
 
 /**
  * Created by sanjum on 11/28/2017.
  */
-class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherModel>)
+class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailModel>)
     : RecyclerView.Adapter<AddLocationAdapter.MyViewHolder>() {
-    lateinit var model: WeatherModel
+    lateinit var model: DetailModel
     override fun getItemCount(): Int {
         return itemList.size
     }
@@ -32,31 +33,23 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
     }
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
-        model = itemList.get(position)
-        holder!!.place.text = model.place
-        //holder!!.temp.text = model.temp.toString() + " \u2103"
-        holder.linearLayout.setOnClickListener {
+        model = itemList[position]
+        holder!!.place.text = model.placename
+        holder.temp.text = model.temp.toString() + " \u2103"
+        holder!!.linearLayout.setOnClickListener {
             listener?.onItemClick(position)
         }
 
     }
 
-    fun replaceALL(list: ArrayList<WeatherModel>?) {
+     fun getModelAtposition(pos:Int):DetailModel{
+         return itemList[pos]
+     }
 
-        this.itemList.clear()
-        itemList.addAll(list!!)
-        this.notifyDataSetChanged()
-    }
-
-    fun addItem(list: ArrayList<WeatherModel>?) {
+    fun addItem(list: ArrayList<DetailModel>?) {
         this.itemList.clear()
         this.itemList.addAll(list!!)
         this.notifyDataSetChanged()
-    }
-
-    fun getName(pos: Int): String {
-
-        return itemList[pos].place
     }
 
 
@@ -68,7 +61,7 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<WeatherMod
     class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
         val place: TextView = itemView!!.findViewById(R.id.tv_item_place)
-        //val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
+        val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
         val linearLayout = itemView!!.findViewById<LinearLayout>(R.id.ll_item)
 
     }

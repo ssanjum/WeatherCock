@@ -16,7 +16,7 @@
             android:id="@+id/ed_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/white" />
@@ -25,7 +25,7 @@
             android:id="@+id/ed_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Password..."
             android:inputType="textPassword"
             android:textColorHint="@color/white" />
@@ -34,18 +34,15 @@
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/margin_large"
             android:background="@drawable/button_bck_ground"
-            android:padding="12sp"
+            android:padding="@dimen/padding_medium"
             android:text="Login" />
 
         <TextView
             android:id="@+id/tv_already_reg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Not Registered ?"
-            android:textColor="@color/white" />
+            style="@style/DefaultTextView"
+            android:text="Not Registered ?" />
 
 
     </LinearLayout>

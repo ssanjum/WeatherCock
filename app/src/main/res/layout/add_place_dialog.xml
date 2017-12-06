@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="@dimen/padding_small">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:id="@+id/ed_dialog_get_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Enter Place..."
             android:inputType="text"
             android:textColorHint="@color/purple" />
@@ -25,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/margin_large"
             android:background="@drawable/button_bck_ground"
-            android:padding="12sp"
+            android:padding="@dimen/padding_medium"
             android:text="Add" />
 
     </LinearLayout>

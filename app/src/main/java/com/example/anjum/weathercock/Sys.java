@@ -17,8 +17,8 @@ import com.google.gson.annotations.SerializedName;
     public String country;
     @SerializedName("sunrise")
     @Expose
-    public Integer sunrise;
+    public Long sunrise;
     @SerializedName("sunset")
     @Expose
-    public Integer sunset;
+    public Long sunset;
 }

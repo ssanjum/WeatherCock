@@ -1,0 +1,47 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Standard Padding for app -->
+    <dimen name="padding_tiny">2dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+
+    <!-- Standard Margin for app -->
+    <dimen name="margin_tiny">2dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+
+    <!-- Standard Font size for app -->
+    <dimen name="font_tiny">8sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
+    <dimen name="font_large">20sp</dimen>
+    <dimen name="font_xlarge">24sp</dimen>
+    <dimen name="tab_indicator_height">2dp</dimen>
+
+    <!-- Dialog Dimensions-->
+    <dimen name="cardCorner_radius_small">4dp</dimen>
+    <dimen name="button_min_height">32dp</dimen>
+    <dimen name="job_status_icon_height">32dp</dimen>
+    <dimen name="job_status_icon_width">32dp</dimen>
+    <dimen name="job_item_height">200dp</dimen>
+    <dimen name="job_item_provider_height">160dp</dimen>
+
+    <!--Thumb Dimensions-->
+    <dimen name="thumb_medium">32dp</dimen>
+    <dimen name="thumb_large">48dp</dimen>
+    <dimen name="thumb_xlarge">72dp</dimen>
+    <dimen name="thumb_xxxlarge">96dp</dimen>
+    <dimen name="provider_photo_thumb_width">96dp</dimen>
+    <dimen name="provider_photo_thumb_height">96dp</dimen>
+    <dimen name="route_thumb_width">32dp</dimen>
+    <dimen name="route_thumb_height">24dp</dimen>
+    <dimen name="job_detail_header_height">120dp</dimen>
+    <dimen name="dashboard_option_height">160dp</dimen>
+    <dimen name="navigation_width">220dp</dimen>
+    <dimen name="button_min_width">180dp</dimen>
+    <dimen name="provider_service_list_item_height">80dp</dimen>
+    <dimen name="provider_list_options_width">180dp</dimen>
+    <dimen name="job_schedule_height">24dp</dimen>
+</resources>

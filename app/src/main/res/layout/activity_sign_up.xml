@@ -11,32 +11,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_animation_list"
+        android:background="@drawable/sign_up_email_gradiant"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/ed_name_signUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            style="@style/DefaultEditText"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Name..."
             android:inputType="text"
             android:textColorHint="@color/white" />
 
         <EditText
             android:id="@+id/ed_email_signUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
+            style="@style/DefaultEditText"
+            android:layout_margin="@dimen/margin_large"
+            android:hint="Email..."
+            android:inputType="text"
             android:textColorHint="@color/white" />
 
         <EditText
             android:id="@+id/ed_password_signUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            style="@style/DefaultEditText"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Password..."
             android:inputType="textPassword"
             android:textColorHint="@color/white" />
@@ -44,12 +41,9 @@
 
         <Button
             android:id="@+id/btn_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/DefaultVioletButton"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
-            android:background="@drawable/button_bck_ground"
-            android:padding="12sp"
+            android:layout_margin="@dimen/margin_large"
             android:text="SignUp" />
 
 

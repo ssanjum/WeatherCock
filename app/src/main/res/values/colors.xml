@@ -20,6 +20,28 @@
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
     <color name="orange">#F76718</color>
+    <color name="violet">#663398</color>
     <color name="bg_yellow">#FFC400</color>
-    <color name="txt_dark_grey">#707070</color>
+    <color name="bg_weather_cock_white">#F5F5F5</color>
+
+    <color name="weather_cock_blue">#03A9F4</color>
+    <color name="weather_cock_orange">#F27D46</color>
+    <color name="dark_hint_grey">#808080</color>
+    <color name="light_hint_grey">#999999</color>
+    <color name="bg_green">#33AC71</color>
+    <color name="blue_feedback">#0085B0</color>
+    <color name="divider_color">#E5E5E5</color>
+
+    <!--Text Color-->
+    <color name="txt_orange">#E96633</color>
+    <color name="sky_blue">#329ACE</color>
+    <color name="txt_light_blue">#4087BB</color>
+    <color name="txt_dark_grey">#808080</color>
+    <color name="txt_white">#FFFFFF</color>
+    <color name="txt_not_rated">#F44336</color>
+    <!--Background colors-->
+    <color name="bg_purple">#663398</color>
+    <color name="bg_blue">#1E1EFF</color>
+    <color name="bg_orange">#F3705A</color>
+    <color name="bg_light_blue">#32C7CE</color>
 </resources>

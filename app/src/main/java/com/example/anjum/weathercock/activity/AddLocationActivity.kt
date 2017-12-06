@@ -25,6 +25,7 @@ import com.example.anjum.weathercock.ActionResult
 import com.example.anjum.weathercock.BuildConfig
 import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.adapter.AddLocationAdapter
+import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.model.WeatherModel
 import com.example.anjum.weathercock.network.ApiClient
 import com.example.anjum.weathercock.network.ApiInterface
@@ -47,7 +48,9 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     lateinit var adapter: AddLocationAdapter
-    var itemList: ArrayList<WeatherModel>? = null
+    var itemList: ArrayList<DetailModel>? = null
+    var itemDialoglist: ArrayList<DetailModel>? = null
+    lateinit var bnd: Bundle
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -77,11 +80,9 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             itemList = Hawk.get("MyKey")
             adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
         } else {
-            adapter = AddLocationAdapter(this@AddLocationActivity, ArrayList<WeatherModel>())
+            adapter = AddLocationAdapter(this@AddLocationActivity, ArrayList<DetailModel>())
         }
-
         rv_add_location.adapter = adapter
-
     }
 
 
@@ -95,9 +96,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             R.id.menu_add -> showDialog()
             R.id.menu_settings -> toast("TODO")
         }
-
         return true
-
     }
 
     private fun showDialog() {
@@ -125,33 +124,39 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 }
 
                 override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
-                    var isFoundInHawk:Boolean=false
+                    var isFoundInHawk: Boolean = false
                     progressDialogue.dismiss()
                     if (response.isSuccessful) {
                         val main_object = response.body()
-                        //  var temp: Long = main_object!!.main.temp.toLong()
-                        // var tempinC = temp - 273
-                        var place = main_object?.name
+                        var temp: Long = main_object!!.main.temp.toLong()
+                        var tempinC = temp - 273
+                        var tempMax: Long = main_object!!.main.tempMax.toLong()
+                        var tempMaxC = tempMax - 273
+                        var tempMin: Long = main_object!!.main.tempMin.toLong()
+                        var tempMinC = tempMin - 273
+                        var detailModel: DetailModel = DetailModel(main_object.sys.country,main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
+                                main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
+
                         if (Hawk.contains("MyKey")) {
                             itemList = Hawk.get("MyKey")
                             for (model in itemList!!) {
-                                var location: String = model.place
-                                if (place.equals(location)) {
-                                    isFoundInHawk=true
+                                var location: String = model.placename
+                                if (place.equals(location, true)) {
+                                    isFoundInHawk = true
+                                    break
                                 }
                             }
-                            if (isFoundInHawk){
+                            if (isFoundInHawk) {
                                 toast("place already exists")
                                 adapter.notifyDataSetChanged()
-                            }
-                            else{
-                                itemList!!.add(WeatherModel(place!!))
+
+                            } else {
+                                itemList!!.add(detailModel)
                                 adapter.addItem(itemList)
                                 Hawk.put("MyKey", itemList)
                             }
-                        }
-                        else{
-                            itemList!!.add(WeatherModel(place!!))
+                        } else {
+                            itemList!!.add(detailModel)
                             adapter.addItem(itemList)
                             Hawk.put("MyKey", itemList)
                         }
@@ -274,7 +279,6 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         lati = mLastLocation.latitude
                         longi = mLastLocation.longitude
                         networkHitWithLatLong(lati, longi)
-
                     } else {
                         Toast.makeText(this@AddLocationActivity, "no_location_detected",
                                 Toast.LENGTH_SHORT).show()
@@ -283,7 +287,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     }
 
     fun networkHitWithLatLong(lati: Double, longi: Double) {
-        var isFoundInHawk:Boolean=false
+        var isFoundInHawk: Boolean = false
         var appid: String = "26f4c901cba4740410b368d8b16a7f53"
         val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
         val call = apiService.getResultByLatLong(lati, longi, appid)
@@ -298,40 +302,44 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 if (response.isSuccessful) {
                     itemList = ArrayList()
                     val main_object = response.body()
-                    val place = main_object?.name
+                    var temp: Long = main_object!!.main.temp.toLong()
+                    var tempinC = temp - 273
+                    var tempMax: Long = main_object!!.main.tempMax.toLong()
+                    var tempMaxC = tempMax - 273
+                    var tempMin: Long = main_object!!.main.tempMin.toLong()
+                    var tempMinC = tempMin - 273
+                    var detailModel: DetailModel = DetailModel(main_object.sys.country,main_object.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
+                            main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
                     if (Hawk.contains("MyKey")) {
                         itemList = Hawk.get("MyKey")
                         for (model in itemList!!) {
-                            var location: String = model.place
-                            if (location.equals(place)) {
-                              isFoundInHawk=true
+                            var location: String = model.placename
+                            if (main_object!!.name.equals(location, true)) {
+                                isFoundInHawk = true
+                                break
                             }
                         }
-                        if (isFoundInHawk){
+                        if (isFoundInHawk) {
                             toast("place already exists")
                             adapter.notifyDataSetChanged()
-                        }
-                        else{
-                            itemList!!.add(WeatherModel(place!!))
+                        } else {
+                            itemList!!.add(detailModel)
                             adapter.addItem(itemList)
                             Hawk.put("MyKey", itemList)
                         }
-                    }
-                    else{
-                        itemList!!.add(WeatherModel(place!!))
+                    } else {
+                        itemList!!.add(detailModel)
                         adapter.addItem(itemList)
                         Hawk.put("MyKey", itemList)
                     }
-                    // var temp: Long = main_object!!.main.temp.toLong()
-                    // var tempinC = temp - 273
-
-
                     adapter.setOnListClickListener(object : AddLocationAdapter.OnListClickListener {
 
                         override fun onItemClick(pos: Int) {
-                            var placeNam: String = adapter.getName(pos)
+                            detailModel = adapter.getModelAtposition(pos)
+                            bnd = Bundle()
                             val intent = Intent(baseContext, DetailsActvity::class.java)
-                            intent.putExtra("NAME", placeNam)
+                            bnd.putSerializable("LIST", detailModel)
+                            intent.putExtras(bnd)
                             startActivity(intent)
                         }
                     })

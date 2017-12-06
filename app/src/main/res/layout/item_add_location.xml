@@ -1,32 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/ll_item"
-        android:orientation="horizontal">
+        android:layout_height="86dp"
+        android:layout_margin="@dimen/margin_small"
+        android:elevation="10dp"
+        app:cardCornerRadius="@dimen/margin_medium">
 
-        <TextView
-            android:id="@+id/tv_item_place"
+        <LinearLayout
+            android:id="@+id/ll_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="NOIDA"
-            android:textColor="@color/purple"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_large"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_item_place"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Noida"
+                android:textColor="#000000"
+                android:textSize="@dimen/font_medium" />
+
+            <TextView
+                android:id="@+id/tv_item_temp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="end"
+                android:text="17"
+                android:textColor="#000000"
+                android:textSize="@dimen/font_medium" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height=".5dp"
-        android:background="@color/blue" />
 
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

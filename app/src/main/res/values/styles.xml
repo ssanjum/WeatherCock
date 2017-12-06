@@ -8,4 +8,55 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="Toolbar_Popup" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/dark_hint_grey</item>
+        <item name="listChoiceBackgroundIndicator">@color/weather_cock_blue</item>
+    </style>
+    <!--Default TextView-->
+    <style name="DefaultTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/txt_white</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--Default EditText-->
+    <style name="DefaultEditText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/txt_white</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="DefaultVioletButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name=
+            "android:background">@drawable/btn_selector_vilot</item>
+        <item name=
+            "android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="DefaultVioletBorderButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/btn_selector_with_empty_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/violet</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 </resources>
