@@ -300,7 +300,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
                 progressDialogue.dismiss()
                 if (response.isSuccessful) {
-                    itemList = ArrayList()
+                    itemList = ArrayList() 
                     val main_object = response.body()
                     var temp: Long = main_object!!.main.temp.toLong()
                     var tempinC = temp - 273
