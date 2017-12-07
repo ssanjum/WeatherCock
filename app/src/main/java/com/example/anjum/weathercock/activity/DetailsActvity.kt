@@ -1,22 +1,16 @@
 package com.example.anjum.weathercock.activity
 
 import android.app.ProgressDialog
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.example.anjum.weathercock.ActionResult
 import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.model.DetailModel
-import com.example.anjum.weathercock.network.ApiClient
-import com.example.anjum.weathercock.network.ApiInterface
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details_actvity.*
 import kotlinx.android.synthetic.main.toolbar.*
-import org.jetbrains.anko.toast
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class DetailsActvity : AppCompatActivity() {
+    var imageUrl: String = "http://openweathermap.org/img/w/"
     lateinit var progressDialogue: ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +27,8 @@ class DetailsActvity : AppCompatActivity() {
 
 
     fun updateUI(model: DetailModel) {
+        var imageId: String = model.icon
+        imageUrl = imageUrl + imageId + ".png"
         tv_detail_temp.text = model.temp.toString() + " \u2103"
         // tv_detail_temp__max.text = model.tempMax.toString() + " \u2103"
         //  tv_detail_temp__min.text = model.tempMin.toString() + " \u2103"
@@ -41,6 +37,8 @@ class DetailsActvity : AppCompatActivity() {
         tv_detail_description.text = model.description
         tv_detail_place.text = model.placename + "," + model.country
         tv_detail_wind_speed.text = model.windSpeed.toString()
+        //Glide.with(this).load(imageUrl).into(iv_detail_image)
+        Picasso.with(this).load(imageUrl).into(iv_detail_image)
         progressDialogue.dismiss()
 
     }

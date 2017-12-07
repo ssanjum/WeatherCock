@@ -8,14 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">@dimen/font_medium</item>
-    </style>
 
-    <style name="Toolbar_Popup" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColorPrimary">@color/dark_hint_grey</item>
-        <item name="listChoiceBackgroundIndicator">@color/weather_cock_blue</item>
-    </style>
     <!--Default TextView-->
     <style name="DefaultTextView">
         <item name="android:layout_width">wrap_content</item>
