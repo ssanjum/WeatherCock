@@ -26,6 +26,8 @@ import android.widget.Toast
 import com.example.anjum.weathercock.ActionResult
 import com.example.anjum.weathercock.BuildConfig
 import com.example.anjum.weathercock.R
+import com.example.anjum.weathercock.R.id.rv_add_location
+import com.example.anjum.weathercock.R.id.toolbar1
 import com.example.anjum.weathercock.adapter.AddLocationAdapter
 import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.model.WeatherModel
@@ -64,7 +66,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_location)
-        setSupportActionBar(toolbar1)
+        //setSupportActionBar(toolbar1)
         progressDialogue = ProgressDialog(this)
         progressDialogue.show()
         progressDialogue.setMessage("Fetching data ....")
