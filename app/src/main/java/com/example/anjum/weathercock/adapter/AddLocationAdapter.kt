@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.model.WeatherModel
+import com.orhanobut.hawk.Hawk
 
 /**
  * Created by sanjum on 11/28/2017.
@@ -25,6 +26,7 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailMode
 
     interface OnListClickListener {
         fun onItemClick(pos: Int)
+        fun onLongPress(pos: Int)
     }
 
     fun setOnListClickListener(listener: OnListClickListener) {
@@ -39,12 +41,21 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailMode
         holder!!.linearLayout.setOnClickListener {
             listener?.onItemClick(position)
         }
+        holder.linearLayout.setOnLongClickListener(object : View.OnLongClickListener {
+
+            override fun onLongClick(v: View?): Boolean {
+                listener!!.onLongPress(position)
+                return true
+            }
+
+        })
+
 
     }
 
-     fun getModelAtposition(pos:Int):DetailModel{
-         return itemList[pos]
-     }
+    fun getModelAtposition(pos: Int): DetailModel {
+        return itemList[pos]
+    }
 
     fun addItem(list: ArrayList<DetailModel>?) {
         this.itemList.clear()
@@ -63,6 +74,14 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailMode
         val place: TextView = itemView!!.findViewById(R.id.tv_item_place)
         val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
         val linearLayout = itemView!!.findViewById<LinearLayout>(R.id.ll_item)
+
+    }
+
+    fun removeItemPosition(pos: Int) {
+        itemList.removeAt(pos)
+        Hawk.put("MyKey",itemList)
+        this.notifyDataSetChanged()
+
 
     }
 

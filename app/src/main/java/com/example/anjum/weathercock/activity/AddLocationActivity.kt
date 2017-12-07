@@ -2,8 +2,10 @@ package com.example.anjum.weathercock.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -134,7 +136,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         var tempMaxC = tempMax - 273
                         var tempMin: Long = main_object!!.main.tempMin.toLong()
                         var tempMinC = tempMin - 273
-                        var detailModel: DetailModel = DetailModel(main_object.sys.country,main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
+                        var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                                 main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
 
                         if (Hawk.contains("MyKey")) {
@@ -300,7 +302,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
                 progressDialogue.dismiss()
                 if (response.isSuccessful) {
-                    itemList = ArrayList() 
+                    itemList = ArrayList()
                     val main_object = response.body()
                     var temp: Long = main_object!!.main.temp.toLong()
                     var tempinC = temp - 273
@@ -308,7 +310,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     var tempMaxC = tempMax - 273
                     var tempMin: Long = main_object!!.main.tempMin.toLong()
                     var tempMinC = tempMin - 273
-                    var detailModel: DetailModel = DetailModel(main_object.sys.country,main_object.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
+                    var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                             main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
                     if (Hawk.contains("MyKey")) {
                         itemList = Hawk.get("MyKey")
@@ -342,12 +344,41 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                             intent.putExtras(bnd)
                             startActivity(intent)
                         }
+
+                        override fun onLongPress(pos: Int) {
+                            showDeleteDialog(pos)
+                        }
                     })
                 } else if (response.message() == "Not Found") {
                     toast("Invalid place")
                 }
             }
         })
+    }
+
+    private fun showDeleteDialog(pos: Int) {
+        var alertDialogView: AlertDialog.Builder = AlertDialog.Builder(this)
+
+        alertDialogView.setTitle("Do you really want to delete this item ??")
+
+
+        alertDialogView.setIcon(android.R.drawable.ic_dialog_alert)
+
+
+        alertDialogView.setPositiveButton("Ok", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                adapter.removeItemPosition(pos)
+                Thread.sleep(500)
+            }
+        })
+
+        alertDialogView.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                dialog!!.dismiss()
+            }
+        })
+        alertDialogView.show()
+
     }
 
 
