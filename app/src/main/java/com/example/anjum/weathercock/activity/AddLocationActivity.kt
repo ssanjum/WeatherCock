@@ -66,7 +66,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_location)
-        //setSupportActionBar(toolbar1)
+        setSupportActionBar(toolbar1)
         progressDialogue = ProgressDialog(this)
         progressDialogue.show()
         progressDialogue.setMessage("Fetching data ....")
@@ -81,9 +81,17 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         rv_add_location.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         if (Hawk.contains("MyKey")) {
+            var model:WeatherModel
             itemList = Hawk.get("MyKey")
             adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
-        } else {
+            for ( model in itemList!!){
+
+                var name=model.placename
+
+                //TODO//
+            }
+        }
+        else {
             adapter = AddLocationAdapter(this@AddLocationActivity, ArrayList<DetailModel>())
         }
         rv_add_location.adapter = adapter
