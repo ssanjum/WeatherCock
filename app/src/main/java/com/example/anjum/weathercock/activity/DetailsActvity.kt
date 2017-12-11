@@ -5,10 +5,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.anjum.weathercock.R
+import com.example.anjum.weathercock.helper.WeatherHelper
 import com.example.anjum.weathercock.model.DetailModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details_actvity.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.toast
 
 class DetailsActvity : AppCompatActivity() {
     var imageUrl: String = "http://openweathermap.org/img/w/"
@@ -45,7 +47,12 @@ class DetailsActvity : AppCompatActivity() {
         tv_detail_wind_speed.text = model.windSpeed.toString() + " mps"
         //Glide.with(this).load(imageUrl).into(iv_detail_image)
         Picasso.with(this).load(imageUrl).into(iv_detail_image)
+        var weather:WeatherHelper= WeatherHelper()
+        var time=weather.convertUtcToDate(model.sunrise)
+        toast(time)
         progressDialogue.dismiss()
+
+
 
     }
 }

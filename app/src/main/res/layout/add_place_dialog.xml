@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/padding_small">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_animation_list"
+        android:layout_margin="@dimen/margin_large"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/ed_dialog_get_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_large"
             android:hint="Enter Place..."
             android:inputType="text"
-            android:textColorHint="@color/purple" />
+            android:textColorHint="@color/black" />
 
         <Button
             android:id="@+id/btn_dialog_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/margin_large"
-            android:background="@drawable/button_bck_ground"
-            android:padding="@dimen/padding_medium"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/btn_selector_with_empty_background"
             android:text="Add" />
 
     </LinearLayout>

@@ -39,16 +39,12 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailMode
         holder!!.place.text = model.placename
         holder.temp.text = model.temp.toString() + " \u2103"
         holder!!.linearLayout.setOnClickListener {
-            listener?.onItemClick(position)
+            listener!!.onItemClick(position)
         }
-        holder.linearLayout.setOnLongClickListener(object : View.OnLongClickListener {
-
-            override fun onLongClick(v: View?): Boolean {
-                listener!!.onLongPress(position)
-                return true
-            }
-
-        })
+        holder.linearLayout.setOnLongClickListener {
+            listener!!.onLongPress(position)
+            true
+        }
 
 
     }
@@ -58,9 +54,10 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailMode
     }
 
     fun addItem(list: ArrayList<DetailModel>?) {
-        this.itemList.clear()
-        this.itemList.addAll(list!!)
-        this.notifyDataSetChanged()
+        itemList.clear()
+        itemList.addAll(list!!)
+        notifyDataSetChanged()
+        Hawk.put("MyKey",itemList)
     }
 
 
@@ -73,16 +70,14 @@ class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailMode
 
         val place: TextView = itemView!!.findViewById(R.id.tv_item_place)
         val temp: TextView = itemView!!.findViewById(R.id.tv_item_temp)
-        val linearLayout = itemView!!.findViewById<LinearLayout>(R.id.ll_item)
+        val linearLayout = itemView!!.findViewById<LinearLayout>(R.id.ll_item)!!
 
     }
 
     fun removeItemPosition(pos: Int) {
         itemList.removeAt(pos)
-        Hawk.put("MyKey",itemList)
+        Hawk.put("MyKey", itemList)
         this.notifyDataSetChanged()
-
-
     }
 
 

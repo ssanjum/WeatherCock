@@ -11,6 +11,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.anjum.weathercock.R;
+import com.example.anjum.weathercock.activity.DetailsActvity;
 import com.example.anjum.weathercock.activity.HomeActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -32,8 +33,8 @@ public class AndroidFirebaseMsgService extends FirebaseMessagingService {
     }
 
     private void createNotification(String messageBody) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("NOTIFICATION",messageBody);
+        Intent intent = new Intent(this, DetailsActvity.class);
+        intent.putExtra("NOTIFICATION", messageBody);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -41,7 +42,7 @@ public class AndroidFirebaseMsgService extends FirebaseMessagingService {
         Uri notificationSoundURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         android.support.v4.app.NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_wind)
-                .setContentTitle("Anjum")
+                .setContentTitle("WeatherCock")
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(notificationSoundURI)

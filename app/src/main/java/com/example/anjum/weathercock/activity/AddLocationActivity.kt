@@ -2,6 +2,7 @@ package com.example.anjum.weathercock.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -15,10 +16,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -55,6 +53,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     var itemList: ArrayList<DetailModel>? = null
     var itemDialoglist: ArrayList<DetailModel>? = null
     lateinit var bnd: Bundle
+    val appid: String = "26f4c901cba4740410b368d8b16a7f53"
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -71,30 +70,75 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         progressDialogue.show()
         progressDialogue.setMessage("Fetching data ....")
         Hawk.init(this).build()
+        itemDialoglist = ArrayList()
+        itemList = ArrayList()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        toolbar1.setNavigationOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                finish()
-            }
-        })
+        toolbar1.setNavigationOnClickListener { finish() }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         rv_add_location.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        if (Hawk.contains("MyKey")) {
-            var model:WeatherModel
-            itemList = Hawk.get("MyKey")
+        itemList = Hawk.get("MyKey")
+        if (itemList != null) {
+            var model: WeatherModel
             adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
-            for ( model in itemList!!){
-
-                var name=model.placename
-
-                //TODO//
+            for (model in itemList!!) {
+                var name = model.placename
+                networkHitWithPlace(name)
             }
-        }
-        else {
+        } else {
             adapter = AddLocationAdapter(this@AddLocationActivity, ArrayList<DetailModel>())
         }
         rv_add_location.adapter = adapter
+    }
+
+    private fun networkHitWithPlace(name: String) {
+        val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
+        val call = apiService.getResultByLocation(name, appid)
+        call.enqueue(object : Callback<ActionResult> {
+            override fun onFailure(call: Call<ActionResult>?, t: Throwable?) {
+                progressDialogue.dismiss()
+                toast(t?.message.toString())
+            }
+
+            override fun onResponse(call: Call<ActionResult>?, response: Response<ActionResult>?) {
+                if (response!!.isSuccessful) {
+                    progressDialogue.dismiss()
+                    val main_object = response.body()
+                    var temp: Long = main_object!!.main.temp.toLong()
+                    var tempinC = temp - 273
+                    var tempMax: Long = main_object!!.main.tempMax.toLong()
+                    var tempMaxC = tempMax - 273
+                    var tempMin: Long = main_object!!.main.tempMin.toLong()
+                    var tempMinC = tempMin - 273
+                    var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
+                            main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
+
+                    itemDialoglist!!.add(detailModel)
+                    adapter.addItem(itemDialoglist)
+                    adapter.setOnListClickListener(object : AddLocationAdapter.OnListClickListener {
+
+                        override fun onItemClick(pos: Int) {
+                            detailModel = adapter.getModelAtposition(pos)
+                            bnd = Bundle()
+                            val intent = Intent(baseContext, DetailsActvity::class.java)
+                            bnd.putSerializable("LIST", detailModel)
+                            intent.putExtras(bnd)
+                            startActivity(intent)
+                        }
+
+                        override fun onLongPress(pos: Int) {
+                            if (itemList!!.size > 1) {
+                                showDeleteDialog(pos)
+                            }
+
+                        }
+                    })
+
+                }
+
+            }
+        })
+
     }
 
 
@@ -120,12 +164,13 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         var button: Button = view.findViewById(R.id.btn_dialog_add)
         dialog.setContentView(view)
         dialog.show()
+        var window: Window = dialog.window
+        window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
         button.setOnClickListener {
             dialog.dismiss()
             progressDialogue.show()
             progressDialogue.setMessage("Fetching data ....")
             var place: String = editgetPlace.text.toString().trim()
-            var appid: String = "26f4c901cba4740410b368d8b16a7f53"
 
             val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
             val call = apiService.getResultByLocation(place, appid)
@@ -189,10 +234,12 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         if (!checkPermissions()) {
             requestPermissions()
         } else {
-            getLastLocation()
+            if (itemList == null) {
+                getLastLocation()
+            }
+
         }
     }
-
 
     private fun requestPermissions() {
         val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -298,9 +345,8 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 }
     }
 
-    fun networkHitWithLatLong(lati: Double, longi: Double) {
+    private fun networkHitWithLatLong(lati: Double, longi: Double) {
         var isFoundInHawk: Boolean = false
-        var appid: String = "26f4c901cba4740410b368d8b16a7f53"
         val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
         val call = apiService.getResultByLatLong(lati, longi, appid)
         call.enqueue(object : Callback<ActionResult> {
@@ -312,7 +358,6 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             override fun onResponse(call: Call<ActionResult>, response: Response<ActionResult>) {
                 progressDialogue.dismiss()
                 if (response.isSuccessful) {
-                    itemList = ArrayList()
                     val main_object = response.body()
                     var temp: Long = main_object!!.main.temp.toLong()
                     var tempinC = temp - 273
@@ -322,6 +367,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     var tempMinC = tempMin - 273
                     var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                             main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
+                    itemList = java.util.ArrayList()
                     if (Hawk.contains("MyKey")) {
                         itemList = Hawk.get("MyKey")
                         for (model in itemList!!) {
@@ -334,6 +380,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         if (isFoundInHawk) {
                             toast("place already exists")
                             adapter.notifyDataSetChanged()
+                            progressDialogue.dismiss()
                         } else {
                             itemList!!.add(detailModel)
                             adapter.addItem(itemList)
@@ -356,7 +403,9 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         }
 
                         override fun onLongPress(pos: Int) {
-                            showDeleteDialog(pos)
+                            if (itemList!!.size > 1) {
+                                showDeleteDialog(pos)
+                            }
                         }
                     })
                 } else if (response.message() == "Not Found") {
@@ -375,18 +424,12 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         alertDialogView.setIcon(android.R.drawable.ic_dialog_alert)
 
 
-        alertDialogView.setPositiveButton("Ok", object : DialogInterface.OnClickListener {
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                adapter.removeItemPosition(pos)
-                Thread.sleep(500)
-            }
-        })
+        alertDialogView.setPositiveButton("Ok") { _, _ ->
+            adapter.removeItemPosition(pos)
+            Thread.sleep(500)
+        }
 
-        alertDialogView.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                dialog!!.dismiss()
-            }
-        })
+        alertDialogView.setNegativeButton("Cancel") { dialog, _ -> dialog!!.dismiss() }
         alertDialogView.show()
 
     }
