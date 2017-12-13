@@ -11,8 +11,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.anjum.weathercock.R;
-import com.example.anjum.weathercock.activity.DetailsActvity;
-import com.example.anjum.weathercock.activity.HomeActivity;
+import com.example.anjum.weathercock.activity.DetailActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -33,7 +32,7 @@ public class AndroidFirebaseMsgService extends FirebaseMessagingService {
     }
 
     private void createNotification(String messageBody) {
-        Intent intent = new Intent(this, DetailsActvity.class);
+        Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("NOTIFICATION", messageBody);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultIntent = PendingIntent.getActivity(this, 0, intent,

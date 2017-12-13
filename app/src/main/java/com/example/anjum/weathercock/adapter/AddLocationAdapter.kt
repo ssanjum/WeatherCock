@@ -15,7 +15,7 @@ import com.orhanobut.hawk.Hawk
 /**
  * Created by sanjum on 11/28/2017.
  */
-class AddLocationAdapter(var contet: Context, var itemList: ArrayList<DetailModel>)
+class AddLocationAdapter(var itemList: ArrayList<DetailModel>)
     : RecyclerView.Adapter<AddLocationAdapter.MyViewHolder>() {
     lateinit var model: DetailModel
     override fun getItemCount(): Int {

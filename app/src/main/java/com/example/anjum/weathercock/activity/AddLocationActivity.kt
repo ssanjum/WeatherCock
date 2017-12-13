@@ -6,7 +6,6 @@ import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,11 +20,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
-import com.example.anjum.weathercock.ActionResult
+import com.example.anjum.weathercock.model.ActionResult
 import com.example.anjum.weathercock.BuildConfig
 import com.example.anjum.weathercock.R
-import com.example.anjum.weathercock.R.id.rv_add_location
-import com.example.anjum.weathercock.R.id.toolbar1
 import com.example.anjum.weathercock.adapter.AddLocationAdapter
 import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.model.WeatherModel
@@ -80,13 +77,13 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         itemList = Hawk.get("MyKey")
         if (itemList != null) {
             var model: WeatherModel
-            adapter = AddLocationAdapter(this@AddLocationActivity, itemList!!)
+            adapter = AddLocationAdapter(itemList!!)
             for (model in itemList!!) {
                 var name = model.placename
                 networkHitWithPlace(name)
             }
         } else {
-            adapter = AddLocationAdapter(this@AddLocationActivity, ArrayList<DetailModel>())
+            adapter = AddLocationAdapter( ArrayList<DetailModel>())
         }
         rv_add_location.adapter = adapter
     }
@@ -120,7 +117,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         override fun onItemClick(pos: Int) {
                             detailModel = adapter.getModelAtposition(pos)
                             bnd = Bundle()
-                            val intent = Intent(baseContext, DetailsActvity::class.java)
+                            val intent = Intent(baseContext, DetailActivity::class.java)
                             bnd.putSerializable("LIST", detailModel)
                             intent.putExtras(bnd)
                             startActivity(intent)
@@ -396,7 +393,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         override fun onItemClick(pos: Int) {
                             detailModel = adapter.getModelAtposition(pos)
                             bnd = Bundle()
-                            val intent = Intent(baseContext, DetailsActvity::class.java)
+                            val intent = Intent(baseContext, DetailActivity::class.java)
                             bnd.putSerializable("LIST", detailModel)
                             intent.putExtras(bnd)
                             startActivity(intent)

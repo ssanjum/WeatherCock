@@ -1,6 +1,7 @@
 package com.example.anjum.weathercock.network;
 
-import com.example.anjum.weathercock.ActionResult;
+import com.example.anjum.weathercock.model.ActionResult;
+import com.example.anjum.weathercock.model.DailyDataModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -23,6 +24,12 @@ public interface ApiInterface {
     getResultByLatLong(@Query("lat") Double lat,
                        @Query("lon") Double lon,
                        @Query("appid") String appid);
+
+    @GET("/data/2.5/forecast/daily")
+    Call<DailyDataModel>
+
+    getDailyResultByName(@Query("q") String place,
+                         @Query("appid") String appid);
 
 
 }

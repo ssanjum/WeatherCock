@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/sign_in_password_gradient"
     android:orientation="vertical"
-    tools:context="com.example.anjum.weathercock.activity.DetailsActvity">
+    tools:context="com.example.anjum.weathercock.activity.DetailActivity">
 
     <include layout="@layout/toolbar" />
 
@@ -22,9 +22,8 @@
             android:gravity="center_horizontal"
             android:paddingLeft="@dimen/padding_large"
             android:text="India"
-            android:textColor="@color/txt_dark_grey"
-            android:textSize="@dimen/font_large"
-            android:textStyle="bold" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_large" />
 
         <TextView
             style="@style/DefaultTextView"
@@ -165,10 +164,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".2"
                 android:gravity="fill_horizontal"
-                android:text="5:45 a.m"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_small"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="5:45 a.m" />
 
 
         </LinearLayout>
@@ -194,6 +193,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
     </LinearLayout>
 
 </LinearLayout>

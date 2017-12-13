@@ -1,4 +1,4 @@
-package com.example.anjum.weathercock;
+package com.example.anjum.weathercock.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
