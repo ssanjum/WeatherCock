@@ -80,10 +80,10 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
             adapter = AddLocationAdapter(itemList!!)
             for (model in itemList!!) {
                 var name = model.placename
-                networkHitWithPlace(name)
+                networkHitWithPlace(name!!)
             }
         } else {
-            adapter = AddLocationAdapter( ArrayList<DetailModel>())
+            adapter = AddLocationAdapter(ArrayList<DetailModel>())
         }
         rv_add_location.adapter = adapter
     }
@@ -101,11 +101,11 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 if (response!!.isSuccessful) {
                     progressDialogue.dismiss()
                     val main_object = response.body()
-                    var temp: Long = main_object!!.main.temp.toLong()
+                    var temp: Float = main_object!!.main.temp
                     var tempinC = temp - 273
-                    var tempMax: Long = main_object!!.main.tempMax.toLong()
+                    var tempMax: Float = main_object!!.main.tempMax
                     var tempMaxC = tempMax - 273
-                    var tempMin: Long = main_object!!.main.tempMin.toLong()
+                    var tempMin: Float = main_object!!.main.tempMin
                     var tempMinC = tempMin - 273
                     var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                             main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
@@ -182,11 +182,11 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     progressDialogue.dismiss()
                     if (response.isSuccessful) {
                         val main_object = response.body()
-                        var temp: Long = main_object!!.main.temp.toLong()
+                        var temp: Float = main_object!!.main.temp
                         var tempinC = temp - 273
-                        var tempMax: Long = main_object!!.main.tempMax.toLong()
+                        var tempMax: Float = main_object!!.main.tempMax
                         var tempMaxC = tempMax - 273
-                        var tempMin: Long = main_object!!.main.tempMin.toLong()
+                        var tempMin: Float = main_object!!.main.tempMin
                         var tempMinC = tempMin - 273
                         var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                                 main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
@@ -194,7 +194,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                         if (Hawk.contains("MyKey")) {
                             itemList = Hawk.get("MyKey")
                             for (model in itemList!!) {
-                                var location: String = model.placename
+                                var location: String = model.placename!!
                                 if (place.equals(location, true)) {
                                     isFoundInHawk = true
                                     break
@@ -356,11 +356,11 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                 progressDialogue.dismiss()
                 if (response.isSuccessful) {
                     val main_object = response.body()
-                    var temp: Long = main_object!!.main.temp.toLong()
+                    var temp: Float = main_object!!.main.temp
                     var tempinC = temp - 273
-                    var tempMax: Long = main_object!!.main.tempMax.toLong()
+                    var tempMax: Float = main_object!!.main.tempMax
                     var tempMaxC = tempMax - 273
-                    var tempMin: Long = main_object!!.main.tempMin.toLong()
+                    var tempMin: Float = main_object!!.main.tempMin
                     var tempMinC = tempMin - 273
                     var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                             main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
@@ -368,7 +368,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     if (Hawk.contains("MyKey")) {
                         itemList = Hawk.get("MyKey")
                         for (model in itemList!!) {
-                            var location: String = model.placename
+                            var location: String = model.placename!!
                             if (main_object!!.name.equals(location, true)) {
                                 isFoundInHawk = true
                                 break

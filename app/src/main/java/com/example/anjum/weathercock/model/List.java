@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class List {
     @SerializedName("dt")
     @Expose
-    public Integer dt;
+    public Long dt;
     @SerializedName("temp")
     @Expose
     public Temp temp;

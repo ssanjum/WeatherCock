@@ -184,7 +184,7 @@
 
         <TextView
             style="@style/DefaultTextView"
-            android:text="Hourly"
+            android:text="Daily"
             android:textColor="@color/black"
             android:textSize="@dimen/font_large"
             android:textStyle="bold" />
@@ -197,7 +197,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

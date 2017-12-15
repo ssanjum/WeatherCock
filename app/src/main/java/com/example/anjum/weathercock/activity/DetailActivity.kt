@@ -3,14 +3,17 @@ package com.example.anjum.weathercock.activity
 import android.app.ProgressDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.widget.LinearLayout
 import com.example.anjum.weathercock.R
+import com.example.anjum.weathercock.adapter.WeeklyListAdapter
 import com.example.anjum.weathercock.helper.WeatherHelper
-import com.example.anjum.weathercock.model.ActionResult
 import com.example.anjum.weathercock.model.DailyDataModel
 import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.network.ApiClient
 import com.example.anjum.weathercock.network.ApiInterface
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_add_location.*
 import kotlinx.android.synthetic.main.activity_details_actvity.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
@@ -22,6 +25,8 @@ class DetailActivity : AppCompatActivity() {
     var imageUrl: String = "http://openweathermap.org/img/w/"
     lateinit var weatherHelper: WeatherHelper
     lateinit var progressDialogue: ProgressDialog
+    lateinit var itemDailyList: ArrayList<DetailModel>
+    lateinit var adapter: WeeklyListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_actvity)
@@ -31,11 +36,15 @@ class DetailActivity : AppCompatActivity() {
         progressDialogue = ProgressDialog(this)
         progressDialogue.setMessage("Fetching Data...")
         progressDialogue.show()
+        rv_detail.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        itemDailyList = java.util.ArrayList()
         weatherHelper = WeatherHelper()
         toolbar1.setNavigationOnClickListener { finish() }
         var detailModel: DetailModel = intent.getSerializableExtra("LIST") as DetailModel
-        networkHitforDailyUpdate(detailModel.placename)
+        networkHitforDailyUpdate(detailModel.placename!!)
         updateUI(detailModel)
+        adapter = WeeklyListAdapter(ArrayList<DetailModel>())
+        rv_detail.adapter = adapter
     }
 
     private fun networkHitforDailyUpdate(placename: String) {
@@ -51,7 +60,16 @@ class DetailActivity : AppCompatActivity() {
                 progressDialogue.dismiss()
                 if (response!!.isSuccessful) {
                     val main_object = response.body()
-                    var jabbu = main_object!!.city.name
+                    for (i in 0..6) {
+                        var detailModel: DetailModel = DetailModel(main_object!!.city.country, placename
+                                , main_object.list[i].temp.day, main_object.list[i].temp.max, main_object.list[i].temp.min,
+                                null, main_object.list[i].humidity, main_object.list[i].pressure, main_object.list[i].weather[0].description,
+                                main_object.list[i].dt, null, main_object.list[i].weather[0].icon)
+                        itemDailyList.add(detailModel)
+                    }
+
+                        adapter.replaceAll(itemDailyList)
+
                 }
 
             }
@@ -62,7 +80,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     fun updateUI(model: DetailModel) {
-        var imageId: String = model.icon
+        var imageId: String = model.icon!!
         imageUrl = imageUrl + imageId + ".png"
         tv_detail_temp.text = model.temp.toString() + " \u2103"
         // tv_detail_temp__max.text = model.tempMax.toString() + " \u2103"
@@ -73,7 +91,7 @@ class DetailActivity : AppCompatActivity() {
         tv_detail_place.text = model.placename + "," + model.country
         tv_detail_wind_speed.text = model.windSpeed.toString() + " mps"
         Picasso.with(this).load(imageUrl).into(iv_detail_image)
-        var time = weatherHelper.convertUtcToDate(model.sunrise)
+        var time = weatherHelper.convertUtcToDate(model.sunrise!!)
         tv_detail_sunRise.text = time
         progressDialogue.dismiss()
 
