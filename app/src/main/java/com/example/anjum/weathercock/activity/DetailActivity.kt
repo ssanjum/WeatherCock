@@ -1,19 +1,16 @@
 package com.example.anjum.weathercock.activity
 
 import android.app.ProgressDialog
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
 import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.adapter.WeeklyListAdapter
-import com.example.anjum.weathercock.helper.WeatherHelper
 import com.example.anjum.weathercock.model.DailyDataModel
 import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.network.ApiClient
 import com.example.anjum.weathercock.network.ApiInterface
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_add_location.*
 import kotlinx.android.synthetic.main.activity_details_actvity.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.toast
@@ -21,9 +18,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : Fitoor() {
     var imageUrl: String = "http://openweathermap.org/img/w/"
-    lateinit var weatherHelper: WeatherHelper
     lateinit var progressDialogue: ProgressDialog
     lateinit var itemDailyList: ArrayList<DetailModel>
     lateinit var adapter: WeeklyListAdapter
@@ -38,7 +34,6 @@ class DetailActivity : AppCompatActivity() {
         progressDialogue.show()
         rv_detail.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         itemDailyList = java.util.ArrayList()
-        weatherHelper = WeatherHelper()
         toolbar1.setNavigationOnClickListener { finish() }
         var detailModel: DetailModel = intent.getSerializableExtra("LIST") as DetailModel
         networkHitforDailyUpdate(detailModel.placename!!)
@@ -48,8 +43,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun networkHitforDailyUpdate(placename: String) {
+        progressDialogue.show()
         val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
-        val call = apiService.getDailyResultByName(placename, weatherHelper.appid)
+        val call = apiService.getDailyResultByName(placename, appid)
         call.enqueue(object : Callback<DailyDataModel> {
             override fun onFailure(call: Call<DailyDataModel>?, t: Throwable?) {
                 progressDialogue.dismiss()
@@ -57,10 +53,10 @@ class DetailActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<DailyDataModel>?, response: Response<DailyDataModel>?) {
-                progressDialogue.dismiss()
+
                 if (response!!.isSuccessful) {
                     val main_object = response.body()
-                    for (i in 0..6) {
+                    (0..6).forEach { i ->
                         var detailModel: DetailModel = DetailModel(main_object!!.city.country, placename
                                 , main_object.list[i].temp.day, main_object.list[i].temp.max, main_object.list[i].temp.min,
                                 null, main_object.list[i].humidity, main_object.list[i].pressure, main_object.list[i].weather[0].description,
@@ -68,7 +64,8 @@ class DetailActivity : AppCompatActivity() {
                         itemDailyList.add(detailModel)
                     }
 
-                        adapter.replaceAll(itemDailyList)
+                    adapter.replaceAll(itemDailyList)
+                    progressDialogue.dismiss()
 
                 }
 
@@ -79,21 +76,18 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    fun updateUI(model: DetailModel) {
+    private fun updateUI(model: DetailModel) {
         var imageId: String = model.icon!!
-        imageUrl = imageUrl + imageId + ".png"
-        tv_detail_temp.text = model.temp.toString() + " \u2103"
-        // tv_detail_temp__max.text = model.tempMax.toString() + " \u2103"
-        //  tv_detail_temp__min.text = model.tempMin.toString() + " \u2103"
-        tv_detail_pressure.text = model.pressure.toString() + " hPa"
-        tv_detail_humidity.text = model.humidity.toString() + "%"
+        imageUrl = imageUrl + imageId + png
+        tv_detail_temp.text = model.temp!!.toInt().toString() + ceciliusUnicode
+        tv_detail_pressure.text = model.pressure!!.toInt().toString() + pressureUnit
+        tv_detail_humidity.text = model.humidity.toString() + percent
         tv_detail_description.text = model.description
         tv_detail_place.text = model.placename + "," + model.country
-        tv_detail_wind_speed.text = model.windSpeed.toString() + " mps"
+        tv_detail_wind_speed.text = model.windSpeed.toString() + windSpeed
         Picasso.with(this).load(imageUrl).into(iv_detail_image)
-        var time = weatherHelper.convertUtcToDate(model.sunrise!!)
-        tv_detail_sunRise.text = time
-        progressDialogue.dismiss()
+        tv_detail_sunRise.text = convertUtcToDate(model.sunrise)
+        tv_detail_sunSet.text = convertUtcToDate(model.sunset)
 
 
     }

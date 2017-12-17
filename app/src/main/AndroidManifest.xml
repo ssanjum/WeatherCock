@@ -24,6 +24,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <activity android:name=".activity.HomeActivity" />
         <activity android:name=".activity.SignUpActivity" />
         <activity android:name=".activity.AddLocationActivity">
@@ -34,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DetailActivity" />
-
+        <activity android:name=".activity.SettingActivity" android:theme="@style/AppTheme.customTheme"></activity>
     </application>
 
 </manifest>

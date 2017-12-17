@@ -13,17 +13,14 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import com.example.anjum.weathercock.model.ActionResult
 import com.example.anjum.weathercock.BuildConfig
 import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.adapter.AddLocationAdapter
+import com.example.anjum.weathercock.event.AlertEvent
 import com.example.anjum.weathercock.model.DetailModel
 import com.example.anjum.weathercock.model.WeatherModel
 import com.example.anjum.weathercock.network.ApiClient
@@ -34,13 +31,16 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_add_location.*
+import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedListener {
+class AddLocationActivity : Fitoor(), GoogleApiClient.OnConnectionFailedListener {
 
 
     private var apiClient: GoogleApiClient? = null
@@ -50,7 +50,6 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     var itemList: ArrayList<DetailModel>? = null
     var itemDialoglist: ArrayList<DetailModel>? = null
     lateinit var bnd: Bundle
-    val appid: String = "26f4c901cba4740410b368d8b16a7f53"
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -69,6 +68,7 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         Hawk.init(this).build()
         itemDialoglist = ArrayList()
         itemList = ArrayList()
+        EventBus.getDefault().register(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         toolbar1.setNavigationOnClickListener { finish() }
@@ -77,13 +77,13 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
         itemList = Hawk.get("MyKey")
         if (itemList != null) {
             var model: WeatherModel
-            adapter = AddLocationAdapter(itemList!!)
-            for (model in itemList!!) {
+            adapter = AddLocationAdapter(itemList!!, this)
+            itemList!!.forEach { model ->
                 var name = model.placename
                 networkHitWithPlace(name!!)
             }
         } else {
-            adapter = AddLocationAdapter(ArrayList<DetailModel>())
+            adapter = AddLocationAdapter(ArrayList<DetailModel>(), this)
         }
         rv_add_location.adapter = adapter
     }
@@ -102,11 +102,11 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
                     progressDialogue.dismiss()
                     val main_object = response.body()
                     var temp: Float = main_object!!.main.temp
-                    var tempinC = temp - 273
+                    var tempinC = convertToTempratureUnit(temp, "C")
                     var tempMax: Float = main_object!!.main.tempMax
-                    var tempMaxC = tempMax - 273
+                    var tempMaxC = convertToTempratureUnit(temp, "C")
                     var tempMin: Float = main_object!!.main.tempMin
-                    var tempMinC = tempMin - 273
+                    var tempMinC = convertToTempratureUnit(temp, "C")
                     var detailModel: DetailModel = DetailModel(main_object.sys.country, main_object!!.name, tempinC, tempMaxC, tempMinC, main_object.wind.speed, main_object.main.humidity,
                             main_object.main.pressure, main_object.weather[0].description, main_object.sys.sunset, main_object.sys.sunrise, main_object.weather[0].icon)
 
@@ -147,9 +147,23 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.menu_add -> showDialog()
-            R.id.menu_settings -> toast("TODO")
+            R.id.menu_settings -> showSetting() //routeActivity(this,SettingActivity::class.java)
         }
         return true
+    }
+
+    private fun showSetting() {
+        var builder = AlertDialog.Builder(this)
+        var view = layoutInflater.inflate(R.layout.activity_setting, null)
+        view.layoutParams
+        var toggle=view.findViewById<TextView>(R.id.toggle_temperature)
+        toggle.setOnClickListener {
+            var event=AlertEvent()
+            event.isFarienhate=true
+            EventBus.getDefault().post(event)
+        }
+        builder.setView(view)
+        builder.show()
     }
 
     private fun showDialog() {
@@ -432,4 +446,13 @@ class AddLocationActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFai
     }
 
 
+    @Subscribe
+    fun onEvent(event:AlertEvent){
+        if (event.isFarienhate){
+            
+        }
+        else{
+            toast("JABBU")
+        }
+    }
 }

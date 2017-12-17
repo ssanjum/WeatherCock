@@ -19,11 +19,11 @@
             android:id="@+id/tv_detail_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="end"
             android:paddingLeft="@dimen/padding_large"
             android:text="India"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_large" />
+            android:textSize="@dimen/font_medium" />
 
         <TextView
             style="@style/DefaultTextView"
@@ -48,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <TextView
@@ -55,7 +56,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".2"
-                android:gravity="end"
+                android:drawableLeft="@drawable/tempw"
                 android:text="67"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_xlarge"
@@ -80,8 +81,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".2"
-                android:drawableLeft="@drawable/ic_humidity"
+                android:drawableLeft="@drawable/humidw"
                 android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_small"
                 android:text="Humidity :"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_small" />
@@ -131,8 +133,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".2"
-                android:drawableLeft="@drawable/ic_pressure"
+                android:drawableLeft="@drawable/presurew"
                 android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_small"
                 android:text="Pressure :"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_small" />
@@ -152,7 +155,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".2"
-                android:drawableLeft="@drawable/ic_pressure"
+                android:drawableLeft="@drawable/sunrisew"
                 android:gravity="center_vertical"
                 android:text="Sunrise :"
                 android:textColor="@color/black"
@@ -160,6 +163,46 @@
 
             <TextView
                 android:id="@+id/tv_detail_sunRise"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                android:gravity="fill_horizontal"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_small"
+                android:textStyle="bold"
+                tools:text="5:45 a.m" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                android:drawableLeft="@drawable/sunsetw"
+                android:gravity="center_vertical"
+                android:text="SunSet :"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_small" />
+
+            <TextView
+                android:id="@+id/tv_detail_sunSet"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".2"
@@ -193,6 +236,62 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent" android:padding="@dimen/padding_small"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" android:layout_marginLeft="@dimen/margin_large"
+                android:drawableLeft="@drawable/calanderw"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/tempw"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/humidw"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/presurew"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Status"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/tempupw"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/tempdownw"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_detail"

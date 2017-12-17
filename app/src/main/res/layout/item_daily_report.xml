@@ -20,7 +20,8 @@
             android:gravity="center"
             android:text="MON"
             android:textColor="@color/black"
-            android:textSize="@dimen/font_small" />
+            android:textSize="@dimen/font_small"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_daily_temp"
@@ -46,7 +47,7 @@
             android:id="@+id/tv_daily_pressure"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:gravity="center"
             android:text="1023"
             android:textColor="@color/black"

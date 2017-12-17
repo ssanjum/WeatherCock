@@ -2,7 +2,6 @@ package com.example.anjum.weathercock.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -11,13 +10,14 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.home_main.*
 import org.jetbrains.anko.toast
 
-class HomeActivity : AppCompatActivity(), View.OnClickListener {
+class HomeActivity : Fitoor(), View.OnClickListener {
 
     lateinit var progressDialogue: ProgressDialog
     lateinit var fAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_main)
+
         progressDialogue = ProgressDialog(this)
         fAuth = FirebaseAuth.getInstance()
         btn_login.setOnClickListener(this)
@@ -52,11 +52,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         val email: String = ed_email.text.toString().trim()
         val password: String = ed_password.text.toString().trim()
         if (TextUtils.isEmpty(email)) {
-            ed_email.setError("Please Enter Email")
+            ed_email.error = "Please Enter Email"
             check = false
         }
         if (TextUtils.isEmpty(password)) {
-            ed_password.setError("Please Enter Password")
+            ed_password.error = "Please Enter Password"
             check = false
         }
         return check

@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.anjum.weathercock.R
+import com.example.anjum.weathercock.activity.Fitoor
 import com.example.anjum.weathercock.model.DetailModel
-import com.example.anjum.weathercock.model.WeatherModel
 import com.orhanobut.hawk.Hawk
 
 /**
  * Created by sanjum on 11/28/2017.
  */
-class AddLocationAdapter(var itemList: ArrayList<DetailModel>)
+class AddLocationAdapter(var itemList: ArrayList<DetailModel>, val ctx: Context)
     : RecyclerView.Adapter<AddLocationAdapter.MyViewHolder>() {
     lateinit var model: DetailModel
     override fun getItemCount(): Int {
@@ -37,7 +37,7 @@ class AddLocationAdapter(var itemList: ArrayList<DetailModel>)
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         model = itemList[position]
         holder!!.place.text = model.placename
-        holder.temp.text = model.temp.toString() + " \u2103"
+        holder.temp.text = model.temp!!.toInt().toString() + Fitoor().ceciliusUnicode
         holder!!.linearLayout.setOnClickListener {
             listener!!.onItemClick(position)
         }
@@ -57,7 +57,7 @@ class AddLocationAdapter(var itemList: ArrayList<DetailModel>)
         itemList.clear()
         itemList.addAll(list!!)
         notifyDataSetChanged()
-        Hawk.put("MyKey",itemList)
+        Hawk.put("MyKey", itemList)
     }
 
 

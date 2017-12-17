@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.anjum.weathercock.R
-import com.example.anjum.weathercock.helper.WeatherHelper
+import com.example.anjum.weathercock.activity.Fitoor
 import com.example.anjum.weathercock.model.DetailModel
 
 /**
@@ -17,15 +17,18 @@ class WeeklyListAdapter(val dailyItemList: ArrayList<DetailModel>) : RecyclerVie
 
     override fun onBindViewHolder(holder: MyViewHolder?, position: Int) {
         model = dailyItemList[position]
-        var day: String = WeatherHelper().convertUtcToDaY(model.sunset!!)
+        var tempC = Fitoor().convertToTempratureUnit(model.temp, "C")
+        var tempMaxC = Fitoor().convertToTempratureUnit(model.tempMax, "C")
+        var tempMinC = Fitoor().convertToTempratureUnit(model.tempMin, "C")
+        var day: String = Fitoor().convertUtcToDaY(model.sunset!!)
 
         holder!!.day.text = day
-        holder!!.temp.text = model.temp.toString()
-        holder!!.humidity.text = model.humidity.toString()
-        holder!!.pressure.text = model.pressure.toString()
-        holder!!.temp_max.text = model.tempMax.toString()
-        holder!!.temp_min.text = model.tempMin.toString()
-        holder.description.text=model.description
+        holder!!.temp.text = tempC!!.toInt().toString()+Fitoor().ceciliusUnicode
+        holder!!.humidity.text = model.humidity.toString()+Fitoor().percent
+        holder!!.pressure.text = model.pressure!!.toInt().toString()+Fitoor().pressureUnit
+        holder!!.temp_max.text = tempMaxC!!.toInt().toString()+Fitoor().ceciliusUnicode
+        holder!!.temp_min.text = tempMinC!!.toInt().toString()+Fitoor().ceciliusUnicode
+        holder.description.text = model.description
 
     }
 
