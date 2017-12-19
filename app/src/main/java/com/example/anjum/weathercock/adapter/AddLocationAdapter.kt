@@ -11,6 +11,7 @@ import com.example.anjum.weathercock.R
 import com.example.anjum.weathercock.activity.Fitoor
 import com.example.anjum.weathercock.model.DetailModel
 import com.orhanobut.hawk.Hawk
+import org.greenrobot.eventbus.Subscribe
 
 /**
  * Created by sanjum on 11/28/2017.
@@ -79,6 +80,8 @@ class AddLocationAdapter(var itemList: ArrayList<DetailModel>, val ctx: Context)
         Hawk.put("MyKey", itemList)
         this.notifyDataSetChanged()
     }
+
+
 
 
 }

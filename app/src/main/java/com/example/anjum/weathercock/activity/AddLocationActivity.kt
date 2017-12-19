@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SwitchCompat
 import android.view.*
 import android.widget.*
 import com.example.anjum.weathercock.model.ActionResult
@@ -155,11 +156,17 @@ class AddLocationActivity : Fitoor(), GoogleApiClient.OnConnectionFailedListener
     private fun showSetting() {
         var builder = AlertDialog.Builder(this)
         var view = layoutInflater.inflate(R.layout.activity_setting, null)
-        view.layoutParams
-        var toggle=view.findViewById<TextView>(R.id.toggle_temperature)
-        toggle.setOnClickListener {
-            var event=AlertEvent()
-            event.isFarienhate=true
+        var toggle = view.findViewById<SwitchCompat>(R.id.switchTemperature)
+        toggle.setOnCheckedChangeListener { buttonView, isChecked ->
+            var event = AlertEvent()
+            if (isChecked){
+                event.isFarienhate = true
+                toggle.text=fahrenheitUnicode
+        }
+            else{
+            event.isCelcius = true
+                toggle.text=ceciliusUnicode
+        }
             EventBus.getDefault().post(event)
         }
         builder.setView(view)
@@ -447,12 +454,11 @@ class AddLocationActivity : Fitoor(), GoogleApiClient.OnConnectionFailedListener
 
 
     @Subscribe
-    fun onEvent(event:AlertEvent){
-        if (event.isFarienhate){
-            
-        }
-        else{
-            toast("JABBU")
+    fun onEvent(event: AlertEvent) {
+        if (event.isFarienhate) {
+                toast("Farenhite")
+        } else {
+            toast("Celcius")
         }
     }
 }

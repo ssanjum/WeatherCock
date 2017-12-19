@@ -2,6 +2,7 @@ package com.example.anjum.weathercock.network;
 
 import com.example.anjum.weathercock.model.ActionResult;
 import com.example.anjum.weathercock.model.DailyDataModel;
+import com.example.anjum.weathercock.model.ResultHourleyModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -30,6 +31,12 @@ public interface ApiInterface {
 
     getDailyResultByName(@Query("q") String place,
                          @Query("appid") String appid);
+
+    @GET("/data/2.5/forecast")
+    Call<ResultHourleyModel>
+
+    getHourleyResultByName(@Query("q") String place,
+                           @Query("appid") String appid);
 
 
 }
