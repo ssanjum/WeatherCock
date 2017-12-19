@@ -25,6 +25,7 @@ class DetailActivity : Fitoor() {
     var imageUrl: String = "http://openweathermap.org/img/w/"
     lateinit var progressDialogue: ProgressDialog
     lateinit var itemDailyList: ArrayList<DetailModel>
+    lateinit var itemHourleyList: ArrayList<HourleyModel>
     lateinit var adapter: WeeklyListAdapter
     lateinit var hourleyadapter: HourleyListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,39 +38,41 @@ class DetailActivity : Fitoor() {
         progressDialogue.setMessage("Fetching Data...")
         progressDialogue.show()
         rv_detail.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        rv_hourley.layoutManager=LinearLayoutManager(this,LinearLayout.HORIZONTAL,false)
         itemDailyList = java.util.ArrayList()
+        itemHourleyList=java.util.ArrayList()
         toolbar1.setNavigationOnClickListener { finish() }
         var detailModel: DetailModel = intent.getSerializableExtra("LIST") as DetailModel
         networkHitforDailyUpdate(detailModel.placename!!)
         networkHitforHourleyUpdate(detailModel.placename!!)
         updateUI(detailModel)
         adapter = WeeklyListAdapter(ArrayList<DetailModel>())
+        hourleyadapter = HourleyListAdapter(ArrayList<HourleyModel>())
         rv_detail.adapter = adapter
+        rv_hourley.adapter=hourleyadapter
     }
 
     private fun networkHitforHourleyUpdate(placename: String) {
-         progressDialogue.show()
-        val apiService=ApiClient.getWeather().create(ApiInterface::class.java)
-        val call=apiService.getHourleyResultByName(placename,appid)
-        call.enqueue(object : Callback<ResultHourleyModel>{
+        progressDialogue.show()
+        val apiService = ApiClient.getWeather().create(ApiInterface::class.java)
+        val call = apiService.getHourleyResultByName(placename, appid)
+        call.enqueue(object : Callback<ResultHourleyModel> {
             override fun onFailure(call: Call<ResultHourleyModel>?, t: Throwable?) {
                 progressDialogue.dismiss()
                 toast(t?.message.toString())
             }
 
             override fun onResponse(call: Call<ResultHourleyModel>?, response: Response<ResultHourleyModel>?) {
-                if (response!!.isSuccessful){
-                    val main_object=response.body()
-                    (0..39).forEach{ i ->
+                if (response!!.isSuccessful) {
+                    val main_object = response.body()
+                    (0..39).forEach { i ->
 
-                        var hourleyModel=HourleyModel(main_object!!.list[i].main.temp,main_object.list[i].wind.speed,
-                                main_object.list[i].main.humidity,main_object.list[i].weather[0].icon,main_object.list[i].dt)
+                        var hourleyModel = HourleyModel(main_object!!.list[i].main.temp, main_object.list[i].wind.speed,
+                                main_object.list[i].main.humidity, main_object.list[i].weather[0].icon, main_object.list[i].dt)
+                        itemHourleyList.add(hourleyModel)
                     }
-                    adapter.replaceAll(itemDailyList)
+                    hourleyadapter.replaceAll(itemHourleyList)
                     progressDialogue.dismiss()
-
-
-
                 }
 
             }
