@@ -604,13 +604,20 @@ public class Fitoor extends FragmentActivity implements AppCompatCallback,
         return dayOfWeek;
     }
 
+    public String convertUtcToTime(Long utc) {
+        //convert seconds to milliseconds
+        Date date = new Date(utc * 1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
+        String dayOfWeek = sdf.format(date);
+        return dayOfWeek;
+    }
+
     public Float convertToTempratureUnit(Float utc, String type) {
         switch (type) {
             case "C":
                 return utc - 273;
             case "F":
                 return utc - 255;
-
         }
         return utc;
     }
@@ -622,10 +629,11 @@ public class Fitoor extends FragmentActivity implements AppCompatCallback,
 
     public void routeActivity(Context context, Class cls) {
         {
-           Intent intent=new Intent(context,cls);
-           startActivity(intent);
+            Intent intent = new Intent(context, cls);
+            startActivity(intent);
         }
 
     }
+
 
 }

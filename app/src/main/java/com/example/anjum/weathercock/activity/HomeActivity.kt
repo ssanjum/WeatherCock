@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import com.example.anjum.weathercock.R
+import com.example.anjum.weathercock.R.id.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.home_main.*
 import org.jetbrains.anko.toast

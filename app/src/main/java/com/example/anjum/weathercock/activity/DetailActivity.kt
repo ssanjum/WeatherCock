@@ -47,7 +47,7 @@ class DetailActivity : Fitoor() {
         networkHitforHourleyUpdate(detailModel.placename!!)
         updateUI(detailModel)
         adapter = WeeklyListAdapter(ArrayList<DetailModel>())
-        hourleyadapter = HourleyListAdapter(ArrayList<HourleyModel>())
+        hourleyadapter = HourleyListAdapter(ArrayList<HourleyModel>(),this)
         rv_detail.adapter = adapter
         rv_hourley.adapter=hourleyadapter
     }

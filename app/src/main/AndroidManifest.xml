@@ -35,7 +35,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DetailActivity" />
-        <activity android:name=".activity.SettingActivity" android:theme="@style/AppTheme.customTheme"></activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/AppTheme.customTheme" />
+        <activity android:name=".activity.ActivityLifeCycleDemo"></activity>
     </application>
 
 </manifest>

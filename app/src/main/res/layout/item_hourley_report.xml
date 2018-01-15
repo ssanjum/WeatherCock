@@ -16,14 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="11:00 p.m"
-            android:textSize="@dimen/font_medium" />
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_hourley_Image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_name"
-            android:text="11:00 p.m" />
+            android:layout_width="72dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_action_name" />
 
         <TextView
             android:id="@+id/tv_hourley_temp"
@@ -31,7 +31,9 @@
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/tempw"
             android:text="26"
-            android:textSize="@dimen/font_medium" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_hourley_humidity"
@@ -39,7 +41,9 @@
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/humidw"
             android:text="78%"
-            android:textSize="@dimen/font_medium" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_medium"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
